@@ -17,7 +17,7 @@ public class javScraper {
 
     public static void main(String []args) {
         System.out.println("launching chrome browser");
-        System.setProperty("webdriver.chrome.driver", driverPath+"chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", driverPath+"chromedriver");
 //        driver = new ChromeDriver();
 //        driver.navigate().to("http://google.com");
 
@@ -29,12 +29,17 @@ public class javScraper {
         capabilities.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
 
         WebDriver driver = new ChromeDriver(capabilities);
-        driver.get("https://www5.javfinder.is/movie/watch/fhd-yellow-hero-hery-102-mr-mizukawa-kazuha-likes-bellows-licking-licking-sekkuu.html");
+        driver.get("https://www.google.com");
 
         List<LogEntry> entries = driver.manage().logs().get(LogType.PERFORMANCE).getAll();
         System.out.println(entries.size() + " " + LogType.PERFORMANCE + " log entries found");
+        System.out.println("-------------------------------------------------------------------");
         for (LogEntry entry : entries) {
             System.out.println(new Date(entry.getTimestamp()) + " " + entry.getLevel() + " " + entry.getMessage());
         }
+        final String messageFirst = entries.get(0).getMessage();
+        System.out.println(messageFirst);
+        JSONObject json = new JSONObject(messageFirst);
+        System.out.println(json.get("webview"));
     }
 }
